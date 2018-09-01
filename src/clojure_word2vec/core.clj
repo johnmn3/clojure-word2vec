@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             ;[clojure.core.matrix :as mat]
             ;[clojure.core.matrix.operators :as matop]
-            [incanter.stats :as i-stat]
+            ;[incanter.stats :as i-stat] testing without incanter
             )
   (:import [com.medallia.word2vec Word2VecTrainerBuilder Word2VecModel]
            [com.medallia.word2vec.thrift Word2VecModelThrift]
