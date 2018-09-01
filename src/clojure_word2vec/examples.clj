@@ -1,6 +1,6 @@
 (ns clojure-word2vec.examples
   (:require [clojure-word2vec.core :refer :all]
-            [incanter.stats :as i-stat]
+            ;[incanter.stats :as i-stat] testing without incanter
             [clojure.edn :as edn]
             [clojure.java.io :as io]))
 
@@ -24,13 +24,14 @@
 ;calculate the cosine similarity between 2 words
 ;this is done by fetching the raw word vectors and using
 ;incanter's cosine-similarity API
-(defn cosine-sim
-  [model word1 word2]
-  (let [rawvecfn  #(.getRawVector (.forSearch model) %)
-        [a1 a2] (map rawvecfn [word1 word2])]
-    (i-stat/cosine-similarity a1 a2)))
+; testing without incanter
+;(defn cosine-sim
+;  [model word1 word2]
+;  (let [rawvecfn  #(.getRawVector (.forSearch model) %)
+;        [a1 a2] (map rawvecfn [word1 word2])]
+;    (i-stat/cosine-similarity a1 a2)))
 ;calculate
-(cosine-sim appvec "g5" "ipod")
+;(cosine-sim appvec "g5" "ipod")
 
 ;Some examples of the relations API
 ;in the original paper, the example offered was
