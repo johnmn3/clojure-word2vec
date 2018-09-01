@@ -1,6 +1,5 @@
 (ns clojure-word2vec.examples
-  (:require [clojure-word2vec.core :refer :all]
-            ;[incanter.stats :as i-stat] testing without incanter
+  (:require [clojure-word2vec.core :as w2v]
             [clojure.edn :as edn]
             [clojure.java.io :as io]))
 
@@ -8,12 +7,12 @@
 (defn read-filtered-dataset
   [inpfile]
   (with-open [r (io/reader (java.util.zip.GZIPInputStream.
-                  (io/input-stream inpfile)))]
+                            (io/input-stream inpfile)))]
     (mapv edn/read-string (line-seq r))))
 
 ;let's read the apple dataset and train a word2vec model on the data
 (def appvec
-  (-> (read-filtered-dataset "resources/apple-data.txt.gz") word2vec))
+  (-> (read-filtered-dataset "resources/apple-data.txt.gz") w2v/word2vec))
 
 ;see the top view words in the vocabulary
 (take 20 (.getVocab appvec))
@@ -42,32 +41,32 @@
 ;good answers
 
 ;if nano is a 'kind of' ipod, then g3 is a
-(get-relations appvec "nano" "ipod"  "g3")
+(w2v/get-relations appvec "nano" "ipod"  "g3")
 ;an ibook
 
 ;when we query for a G5 instead (a desktop computer)
-(get-relations appvec "nano" "ipod"  "g5")
+(w2v/get-relations appvec "nano" "ipod"  "g5")
 ;we don't find a desktop in the top 5 answers
 
 ;if ghz is a measure of speed, then gb is a measure of
-(get-relations appvec "ghz" "speed" "gb")
+(w2v/get-relations appvec "ghz" "speed" "gb")
 ;data, the 4th item on the list
 
 ;if 300gb is the measure of a drive, then 2ghz is a
-(get-relations appvec "300gb" "drive" "2ghz")
+(w2v/get-relations appvec "300gb" "drive" "2ghz")
 ;measure of a processor (2nd item)
 
 ;sub-type of a product :airport-extreme (a wifi base station made by apple)
 ;what's an ipod's type
-(get-relations appvec "airport" "extreme" "ipod")
+(w2v/get-relations appvec "airport" "extreme" "ipod")
 ;nano (2nd item)
 
-;we can use the get-matches API to return the words
+;we can use the w2v/get-matches API to return the words
 ;that are closest (by euclidean distance) to the argument
-(get-matches appvec "radeon")
-(get-matches appvec "seagate")
-(get-matches appvec "nano")
-(get-matches appvec "projector")
-(get-matches appvec "raid")
-(get-matches appvec "quicktime")
-(get-matches appvec "powermac")
+(w2v/get-matches appvec "radeon")
+(w2v/get-matches appvec "seagate")
+(w2v/get-matches appvec "nano")
+(w2v/get-matches appvec "projector")
+(w2v/get-matches appvec "raid")
+(w2v/get-matches appvec "quicktime")
+(w2v/get-matches appvec "powermac")

@@ -1,9 +1,5 @@
 (ns clojure-word2vec.core
-  (:require [clojure.java.io :as io]
-            ;[clojure.core.matrix :as mat]
-            ;[clojure.core.matrix.operators :as matop]
-            ;[incanter.stats :as i-stat] testing without incanter
-            )
+  (:require [clojure.java.io :as io])
   (:import [com.medallia.word2vec Word2VecTrainerBuilder Word2VecModel]
            [com.medallia.word2vec.thrift Word2VecModelThrift]
            [com.medallia.word2vec.neuralnetwork NeuralNetworkType]
@@ -24,13 +20,13 @@
            use-negative-samples 25
            downsampling-rate 1e-5
            num-iterations 100
-          num-threads (.availableProcessors (Runtime/getRuntime))}
-     }]
-     (let [bldr (doto (Word2VecModel/trainer )
-       (.setMinVocabFrequency min-vocab-frequency)
-       (.useNumThreads num-threads))]
-       (.train bldr sentences)
-       )))
+          num-threads (.availableProcessors (Runtime/getRuntime))}}]
+
+   (let [bldr (doto (Word2VecModel/trainer)
+               (.setMinVocabFrequency min-vocab-frequency)
+               (.useNumThreads num-threads))]
+     (.train bldr sentences))))
+
 
 (defn create-input-format
   "Takes a text file and creates the input format required
@@ -42,12 +38,12 @@
       (let [data  (Common/readToList f)]
         (->> data
              ;split the string and return a seq instead of Array of strings
-             (map #(seq (.split #" " % )))
+             (map #(seq (.split #" " %)))
              ;remove empty strings
              (map #(remove empty? %))
              ;remove collections that are empty
-             (remove empty?)
-             )))))
+             (remove empty?))))))
+
 
 (defn get-matches
   "Given a trained word2vec model and a search word,
@@ -59,7 +55,7 @@
                      (.getMatches word (inc num-matches)))]
      (->> matches
           (mapv #(.match %))
-          (remove #{word} )
+          (remove #{word})
           (take num-matches)))))
 
 (defn get-relations
@@ -71,8 +67,8 @@
   [model word1 word2 word3]
   (let [inp-words #{word1 word2 word3}
         matches (-> (.forSearch model)
-        (.similarity word1 word2)
-        (.getMatches word3 8))]
+                 (.similarity word1 word2)
+                 (.getMatches word3 8))]
     (->> matches
          (mapv #(.match %))
          (remove inp-words)
