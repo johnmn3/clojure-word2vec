@@ -4,6 +4,6 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                [incanter "1.5.5"]
+                ;[incanter "1.5.5"] testing without incanter
                 [com.medallia.word2vec/Word2VecJava "0.9.0"]
                 ])
